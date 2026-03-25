@@ -27,6 +27,8 @@ services:
       - AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
       - ASYNC_FACE_INDEXING_ENABLED=true
       - FRONTEND_URL=http://217.216.79.141
+    volumes:
+      - media_data:/app/media
     depends_on:
       - db
       - redis
@@ -46,6 +48,8 @@ services:
       - AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
       - ASYNC_FACE_INDEXING_ENABLED=true
       - FRONTEND_URL=http://217.216.79.141
+    volumes:
+      - media_data:/app/media
     depends_on:
       - db
       - redis
@@ -62,3 +66,4 @@ services:
 
 volumes:
   postgres_data:
+  media_data:

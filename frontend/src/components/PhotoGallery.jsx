@@ -24,77 +24,25 @@ const PhotoGallery = ({ photos }) => {
   const handleDownload = async (e, url) => {
     e.stopPropagation();
     const filename = url.split('/').pop()?.split('?')[0] || `event-photo-${Date.now()}.jpg`;
-    
+
     try {
-      // Create canvas and context
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      
-      // Load both images
-      const img = new Image();
-      img.crossOrigin = 'Anonymous';
-      const logo = new Image();
-      logo.crossOrigin = 'Anonymous';
-      
-      // Promisify image loading
-      await Promise.all([
-        new Promise((resolve, reject) => {
-          img.onload = resolve;
-          img.onerror = () => reject(new Error('Failed to load image'));
-          // Pass the URL through our proxy endpoint to avoid CORS issues
-          const proxyUrl = `${api.defaults.baseURL}/proxy-image/?url=${encodeURIComponent(url)}`;
-          img.src = proxyUrl;
-        }),
-        new Promise((resolve, reject) => {
-          logo.onload = resolve;
-          logo.onerror = () => reject(new Error('Failed to load watermark'));
-          logo.src = '/watermark.png';
-        })
-      ]);
+      // Fetch the image as a blob through the proxy (handles CORS)
+      const proxyUrl = `${api.defaults.baseURL}/proxy-image/?url=${encodeURIComponent(url)}`;
+      const response = await fetch(proxyUrl);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const blob = await response.blob();
+      const objectUrl = URL.createObjectURL(blob);
 
-      // Set canvas size
-      canvas.width = img.width;
-      canvas.height = img.height;
-
-      // Draw main image
-      ctx.drawImage(img, 0, 0);
-
-      // Define watermark size (e.g., 15% of the image width)
-      const watermarkWidth = Math.max(100, canvas.width * 0.15); // ensure min size
-      const watermarkHeight = (logo.height / logo.width) * watermarkWidth;
-      
-      // Calculate position (bottom right)
-      const padding = 20; 
-      const x = canvas.width - watermarkWidth - padding;
-      const y = canvas.height - watermarkHeight - padding;
-
-      // Add watermark
-      ctx.globalAlpha = 0.8;
-      ctx.drawImage(logo, x, y, watermarkWidth, watermarkHeight);
-      ctx.globalAlpha = 1.0;
-
-      // Generate downloaded image URL
-      const dataUrl = canvas.toDataURL('image/jpeg', 0.95);
-      
-      // Download
       const link = document.createElement('a');
-      link.href = dataUrl;
+      link.href = objectUrl;
       link.download = filename;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-
+      URL.revokeObjectURL(objectUrl);
     } catch (err) {
-      console.error('Error applying watermark, falling back to original download:', err);
-      // Fallback to normal download
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = filename;
-      link.rel = 'noopener noreferrer';
-      link.target = '_blank';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      console.error('Proxy download failed, opening in new tab:', err);
+      window.open(url, '_blank');
     }
   };
 
