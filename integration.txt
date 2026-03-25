@@ -1,0 +1,108 @@
+# Face Detection Project Integration Guide
+
+This document outlines the complete setup required to run this project, including Docker configurations, backend (Django) setup, and frontend (React/Vite) setup.
+
+## Prerequisites
+- Node.js (v18+)
+- Python (3.10+)
+- Docker Desktop or Docker Engine & Docker Compose
+- Virtual Environment tool for Python
+
+---
+
+## 1. Docker Setup (Database & Redis)
+
+The project relies on PostgreSQL and Redis which are configured via `docker-compose.yml` in the `backend` directory.
+
+**To start the infrastructure services:**
+1. Open a terminal.
+2. Navigate to the backend directory:
+   ```bash
+   cd s:\Face_detection_work\backend
+   ```
+3. Run docker-compose:
+   ```bash
+   docker-compose up -d
+   ```
+This will start:
+- **PostgreSQL** on port `5432` (User: `myuser`, Password: `mypassword`, DB: `facedb`)
+- **Redis** on port `6379`
+
+---
+
+## 2. Backend Setup (Django)
+
+The backend is a Django application resting in the `backend` directory. We have just generated a `requirements.txt` from the active environment.
+
+**Steps to configure and run the backend:**
+1. Navigate to the backend directory:
+   ```bash
+   cd s:\Face_detection_work\backend
+   ```
+2. Create and activate a Virtual Environment if you haven't:
+   ```bash
+   # Create Virtual Env
+   python -m venv venv
+   
+   # Activate it (on Windows)
+   .\venv\Scripts\activate
+   ```
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Set up environment variables:
+   Copy `.env.example` to `.env` and fill the variables:
+   ```env
+   FRONTEND_URL=http://localhost:5173
+   DEFAULT_FROM_EMAIL=noreply@yourdomain.com
+   SMTP_HOST=smtp.gmail.com
+   SMTP_PORT=587
+   SMTP_USER=your-email@gmail.com
+   SMTP_PASSWORD=your-app-password
+   SMTP_USE_TLS=true
+   SMTP_USE_SSL=false
+   ```
+5. Apply Migrations to PostgreSQL db:
+   ```bash
+   python manage.py migrate
+   ```
+6. Start the Celery worker (if applicable for face_recognition tasks relying on Redis):
+   ```bash
+   celery -A django_project worker -l INFO --pool=solo
+   ```
+7. Start the Django development server:
+   ```bash
+   python manage.py runserver
+   ```
+   *The backend will be available at `http://127.0.0.1:8000/`*
+
+---
+
+## 3. Frontend Setup (React/Vite)
+
+The frontend is a Vite + React application.
+
+**Steps to configure and run the frontend:**
+1. Open a new terminal.
+2. Navigate to the frontend directory:
+   ```bash
+   cd s:\Face_detection_work\frontend
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+4. Start the frontend development server:
+   ```bash
+   npm run dev
+   ```
+   *The frontend will be available at `http://localhost:5173/`*
+
+---
+
+## Summary of Commands to Run Daily
+1. `docker-compose up -d` (in `backend`)
+2. `.\venv\Scripts\activate` and `python manage.py runserver` (in `backend`)
+3. `celery -A django_project worker -l info --pool=solo` (in `backend` for async tasks)
+4. `npm run dev` (in `frontend`)

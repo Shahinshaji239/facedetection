@@ -1,0 +1,16 @@
+# General
+.env
+.env.*
+.DS_Store
+
+# Backend
+backend/venv/
+backend/__pycache__/
+backend/*.pyc
+backend/db.sqlite3
+backend/media/
+backend/photos/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
