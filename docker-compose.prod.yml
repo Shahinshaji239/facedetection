@@ -26,7 +26,7 @@ services:
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
       - AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
       - ASYNC_FACE_INDEXING_ENABLED=true
-      - FRONTEND_URL=http://217.216.79.141
+      - FRONTEND_URL=https://event.professionalphotographers.co
     volumes:
       - media_data:/app/media
     depends_on:
@@ -47,7 +47,7 @@ services:
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
       - AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
       - ASYNC_FACE_INDEXING_ENABLED=true
-      - FRONTEND_URL=http://217.216.79.141
+      - FRONTEND_URL=https://event.professionalphotographers.co
     volumes:
       - media_data:/app/media
     depends_on:
@@ -59,10 +59,10 @@ services:
     build:
       context: ./frontend
       args:
-        VITE_API_URL: http://217.216.79.141:8000/api
+        VITE_API_URL: https://event.professionalphotographers.co/api
     restart: always
     ports:
-      - "80:80"
+      - "8080:80"   # moved off port 80 — host Nginx handles 80/443
 
 volumes:
   postgres_data:
