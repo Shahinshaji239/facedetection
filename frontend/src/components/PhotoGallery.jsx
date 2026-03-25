@@ -26,9 +26,13 @@ const PhotoGallery = ({ photos }) => {
     const filename = url.split('/').pop()?.split('?')[0] || `event-photo-${Date.now()}.jpg`;
 
     try {
-      // Fetch the image as a blob through the proxy (handles CORS)
-      const proxyUrl = `${api.defaults.baseURL}/proxy-image/?url=${encodeURIComponent(url)}`;
-      const response = await fetch(proxyUrl);
+      // Extract the relative media path (e.g. "event_photos/3W2A1993.JPG")
+      // and call the backend download endpoint which reads directly from disk
+      const mediaPath = url.includes('/media/') ? url.split('/media/')[1] : null;
+      if (!mediaPath) throw new Error('Not a media URL');
+
+      const downloadUrl = `${api.defaults.baseURL}/download-photo/?path=${encodeURIComponent(mediaPath)}`;
+      const response = await fetch(downloadUrl);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const blob = await response.blob();
       const objectUrl = URL.createObjectURL(blob);
@@ -41,7 +45,7 @@ const PhotoGallery = ({ photos }) => {
       document.body.removeChild(link);
       URL.revokeObjectURL(objectUrl);
     } catch (err) {
-      console.error('Proxy download failed, opening in new tab:', err);
+      console.error('Download failed, opening in new tab:', err);
       window.open(url, '_blank');
     }
   };
