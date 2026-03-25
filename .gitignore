@@ -9,7 +9,6 @@ backend/__pycache__/
 backend/*.pyc
 backend/db.sqlite3
 backend/media/
-backend/photos/
 
 # Frontend
 frontend/node_modules/
