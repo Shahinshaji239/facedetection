@@ -26,6 +26,7 @@ services:
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
       - AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
       - ASYNC_FACE_INDEXING_ENABLED=true
+      - FRONTEND_URL=http://217.216.79.141
     depends_on:
       - db
       - redis
@@ -44,6 +45,7 @@ services:
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
       - AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
       - ASYNC_FACE_INDEXING_ENABLED=true
+      - FRONTEND_URL=http://217.216.79.141
     depends_on:
       - db
       - redis
