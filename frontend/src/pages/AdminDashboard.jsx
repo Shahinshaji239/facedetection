@@ -6,7 +6,7 @@ import EventPhotosModal from '../components/EventPhotosModal';
 import { compressImageForUpload } from '../utils/imageUpload';
 import { Upload, Loader, LogOut } from 'lucide-react';
 
-const UPLOAD_CONCURRENCY = 4;
+const UPLOAD_CONCURRENCY = 2; // Reduced to prevent dropping network packets on large batches
 
 const AdminDashboard = () => {
   const [events, setEvents] = useState([]);

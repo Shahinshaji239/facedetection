@@ -12,7 +12,24 @@ const EventCard = ({ event, onDelete, onViewPhotos, onEventUpdated }) => {
   const eventUrl = `${window.location.origin}/event/${event.id}`;
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(eventUrl);
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(eventUrl).catch(console.error);
+    } else {
+      // Fallback for non-HTTPS connections
+      const textArea = document.createElement("textarea");
+      textArea.value = eventUrl;
+      textArea.style.position = "absolute";
+      textArea.style.left = "-999999px";
+      document.body.prepend(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+      } catch (error) {
+        console.error("Clipboard fallback failed", error);
+      } finally {
+        textArea.remove();
+      }
+    }
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
