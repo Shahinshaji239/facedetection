@@ -50,7 +50,10 @@ services:
       - backend
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: http://217.216.79.141:8000/api
     restart: always
     ports:
       - "80:80"
