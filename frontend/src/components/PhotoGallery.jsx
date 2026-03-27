@@ -104,9 +104,11 @@ const PhotoGallery = ({ photos }) => {
           <div className="position-absolute bottom-0 mb-4 text-center w-100">
              <button 
                onClick={(e) => handleDownload(e, selectedImage)}
-               className="btn btn-light rounded-pill px-4"
+               className="btn btn-light rounded-pill px-4 fw-medium shadow-sm d-flex align-items-center justify-content-center mx-auto"
+               style={{ gap: '8px' }}
              >
-               <Download size={18} className="me-2" /> Download High-Res
+               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+               Download
              </button>
           </div>
         </div>
