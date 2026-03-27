@@ -56,42 +56,52 @@ const SelfieUploader = ({ onUpload, isLoading, uploadError }) => {
   };
 
   return (
-    <div className="uploader-card glass-panel mb-4 text-center">
-      <h4 className="fw-semibold mb-2 text-dark">Find Your Photos</h4>
-      <p className="text-muted mb-4 small">
-        Upload a quick selfie, and our AI will fetch all the photos you appear in.
+    <div className="bg-white p-4 p-md-5 text-start shadow-sm" style={{ borderRadius: '20px' }}>
+      <h3 className="fw-bold mb-2 text-dark">Find Your Photos</h3>
+      <p className="text-muted mb-4 pb-2" style={{ fontSize: '0.95rem', lineHeight: '1.5' }}>
+        Upload a quick selfie, and our AI will fetch all the photos you appear in. We use
+        secure biometric matching to instantly scan thousands of moments.
       </p>
 
       {!preview ? (
-        <div
-          className={`upload-dropzone ${dragActive ? 'upload-dropzone-active' : ''}`}
-          onDragEnter={handleDrag}
-          onDragLeave={handleDrag}
-          onDragOver={handleDrag}
-          onDrop={handleDrop}
-        >
-          <input
-            ref={galleryInputRef}
-            type="file"
-            className="d-none"
-            accept="image/jpeg, image/png, image/jpg"
-            onChange={handleChange}
-          />
-          <input
-            ref={cameraInputRef}
-            type="file"
-            className="d-none"
-            accept="image/jpeg, image/png, image/jpg"
-            capture="user"
-            onChange={handleChange}
-          />
-          <UploadCloud size={56} className={`mb-3 ${dragActive ? 'text-primary' : 'text-secondary'}`} />
-          <h5 className="fw-medium mb-3">Drag and drop your selfie</h5>
-          <div className="d-flex justify-content-center gap-3">
-            <button className="btn btn-outline-primary btn-sm rounded-pill px-4" onClick={onCameraClick}>
+        <div className="mb-4">
+          <div
+            className={`cursor-pointer d-flex flex-column align-items-center justify-content-center py-5 mb-4 ${dragActive ? 'bg-light' : ''}`}
+            style={{ border: '1px dashed #ced4da', borderRadius: '16px', backgroundColor: '#F8F9FA' }}
+            onDragEnter={handleDrag}
+            onDragLeave={handleDrag}
+            onDragOver={handleDrag}
+            onDrop={handleDrop}
+            onClick={onGalleryClick}
+          >
+            <input
+              ref={galleryInputRef}
+              type="file"
+              className="d-none"
+              accept="image/jpeg, image/png, image/jpg"
+              onChange={handleChange}
+            />
+            <input
+              ref={cameraInputRef}
+              type="file"
+              className="d-none"
+              accept="image/jpeg, image/png, image/jpg"
+              capture="user"
+              onChange={handleChange}
+            />
+            <div className="rounded-circle d-flex align-items-center justify-content-center mb-3" style={{ width: '48px', height: '48px', backgroundColor: '#E2E8F0', color: '#0057C0' }}>
+              <UploadCloud size={24} strokeWidth={2.5} />
+            </div>
+            <h6 className="fw-bold mb-1 text-dark">Drop your selfie here</h6>
+            <p className="small text-muted fw-bold mb-0" style={{ letterSpacing: '0.5px', fontSize: '10px' }}>OR CLICK TO SELECT FILE</p>
+          </div>
+          <div className="d-flex gap-3">
+            <button className="btn btn-primary rounded-pill px-4 py-2 fw-medium d-flex align-items-center justify-content-center gap-2" style={{ backgroundColor: '#0057C0', borderColor: '#0057C0' }} onClick={onCameraClick}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
               Take a Selfie
             </button>
-            <button className="btn btn-outline-secondary btn-sm rounded-pill px-4" onClick={onGalleryClick}>
+            <button className="btn btn-light rounded-pill px-4 py-2 fw-medium d-flex align-items-center justify-content-center gap-2 bg-light border-0 text-dark" onClick={onGalleryClick} style={{ backgroundColor: '#E2E8F0' }}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
               Browse Gallery
             </button>
           </div>
