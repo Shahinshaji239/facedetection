@@ -86,26 +86,29 @@ const PhotoGallery = ({ photos }) => {
           style={{ zIndex: 1050, backdropFilter: 'blur(5px)' }}
           onClick={() => setSelectedImage(null)}
         >
-          <button 
-            className="position-absolute top-0 end-0 m-4 btn btn-link text-white p-0 border-0"
-            onClick={(e) => { e.stopPropagation(); setSelectedImage(null); }}
-          >
-            <XSquare size={36} />
-          </button>
+          {/* Top right close button is removed to avoid notch/header overlap */}
           
           <img 
             src={selectedImage} 
             alt="Full screen preview" 
             className="img-fluid" 
-            style={{ maxHeight: '90vh', maxWidth: '90vw', objectFit: 'contain' }}
+            style={{ maxHeight: '85vh', maxWidth: '90vw', objectFit: 'contain' }}
             onClick={(e) => e.stopPropagation()}
           />
 
-          <div className="position-absolute bottom-0 mb-4 text-center w-100">
+          <div className="position-absolute bottom-0 mb-4 text-center w-100 d-flex justify-content-center gap-3">
+             <button 
+               onClick={(e) => { e.stopPropagation(); setSelectedImage(null); }}
+               className="btn btn-dark rounded-pill px-4 fw-medium shadow-sm d-flex align-items-center justify-content-center border-0 border-white text-white"
+               style={{ gap: '8px', zIndex: 1100, backgroundColor: 'rgba(0,0,0,0.6)' }}
+             >
+               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+               Close
+             </button>
              <button 
                onClick={(e) => handleDownload(e, selectedImage)}
-               className="btn btn-light rounded-pill px-4 fw-medium shadow-sm d-flex align-items-center justify-content-center mx-auto"
-               style={{ gap: '8px' }}
+               className="btn btn-light rounded-pill px-4 fw-medium shadow-sm d-flex align-items-center justify-content-center"
+               style={{ gap: '8px', zIndex: 1100 }}
              >
                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
                Download
